@@ -1,118 +1,40 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {View, Text} from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {TransactionList} from './src/components/TransactionList';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const ErrorScreen: React.FC<{route: any}> = ({route}) => (
+  <View>
+    <Text>{`Error Screen with ${route.params.objectId}`}</Text>
+  </View>
+);
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const DetailsScreen1: React.FC<{route: any}> = ({route}) => (
+  <View>
+    <Text>{`Details Screen 1 with ${route.params.objectId}`}</Text>
+  </View>
+);
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const DetailsScreen2: React.FC<{route: any}> = ({route}) => (
+  <View>
+    <Text>{`Details Screen 2 with ${route.params.objectId}`}</Text>
+  </View>
+);
+
+const Stack = createStackNavigator();
+
+const App = () => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="TransactionList">
+        <Stack.Screen name="TransactionList" component={TransactionList} />
+        <Stack.Screen name="ErrorScreen" component={ErrorScreen} />
+        <Stack.Screen name="DetailsScreen1" component={DetailsScreen1} />
+        <Stack.Screen name="DetailsScreen2" component={DetailsScreen2} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
-
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+};
 
 export default App;
